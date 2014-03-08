@@ -16,8 +16,9 @@ public class ImageProc{
 			DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/context/";
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inSampleSize = 4;
+			Bitmap bitmap = BitmapFactory.decodeFile(path, options);
 			Log.i(TAG,path);
-			Bitmap bmp = BitmapFactory.decodeFile(path, options);
+			Bitmap bmp = BitmapFactory.decodeFile(path);
 			bmp=tidyImage(bmp);
 			return textFromTidyImage(bmp);
 	}
@@ -28,11 +29,14 @@ public class ImageProc{
 	}
 
 	private static String textFromTidyImage(Bitmap bmp){
-			bmp = bmp.copy(Bitmap.Config.ARGB_8888, true); //required for tess
+			//bmp = bmp.copy(Bitmap.Config.ARGB_8888, true); //required for tess
 			Log.v(TAG, "Before baseApi");
 			TessBaseAPI baseApi = new TessBaseAPI();
 			baseApi.init(DATA_PATH, lang);
 			baseApi.setImage(bmp);
-			return baseApi.getUTF8Text();
+			String out=baseApi.getUTF8Text();
+			baseApi.clear();
+			Log.e(TAG,out);
+			return out;
 	}
 }

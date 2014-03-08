@@ -5,19 +5,20 @@
 
 package com.coolrunnings.context;
 
-import java.io.File;
+//import java.io.File;
 
 import com.google.android.glass.app.Card;
-import com.google.android.glass.media.CameraManager;
-import com.google.android.glass.timeline.LiveCard;
-import com.google.glass.widget.SliderView;
+//import com.google.android.glass.media.CameraManager;
+//import com.google.android.glass.timeline.LiveCard;
+//import com.google.glass.widget.SliderView;
 
 import android.os.Bundle;
-import android.os.FileObserver;
-import android.provider.MediaStore;
+//import android.os.FileObserver;
+//import android.provider.MediaStore;
 import android.app.Activity;
-import android.content.Intent;
-import android.view.Menu;
+//import android.content.Intent;
+import android.hardware.Camera;
+//import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -34,26 +35,51 @@ public class MainActivity extends Activity {
 		 * More info here: http://developer.android.com/guide/topics/ui/themes.html
 		 */
 		
-		//Start a camera
+		Camera mCamera = Camera.open();
+		
+		Camera.Parameters parameters = mCamera.getParameters();
+		
+		parameters.setPictureFormat(4);
+		
+		Camera.PictureCallback raw=new Camera.PictureCallback() {
+			
+			@Override
+			public void onPictureTaken(byte[] data, Camera camera) {
+				String newWord = ImageProc.convertImageToString(data);
+				createCard(newWord);
+			}
+		};
+		
+		mCamera.takePicture(null, raw, null);
+
+		mCamera.release();
+		mCamera = null;
+		
+	}	
+		
+		
+		
+		
+		/*
+		// Start a camera
 		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		// Take a picture
 		startActivityForResult(cameraIntent,1);
-	}
+		*/
 	
+	
+	
+	
+	/*
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		Card card1 = new Card(this);
-		card1.setText("Loading..."); // Main text area
-		//card1.setFootnote("..or Ma'am"); // Footer
-		View card1View = card1.toView();
-
-		// Display the card we just created
-		setContentView(card1View);
 		if (requestCode == 1 && resultCode == RESULT_OK) {
 	        String picturePath = data.getStringExtra(CameraManager.EXTRA_PICTURE_FILE_PATH);
 	        processPictureWhenReady(picturePath);
 	    }
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+	
 	
 	private void processPictureWhenReady(final String picturePath) {
 	    final File pictureFile = new File(picturePath);
@@ -102,6 +128,7 @@ public class MainActivity extends Activity {
 	    
 	    
 	}
+	*/
 		
 		
 	private void createCard(String wordToShow){

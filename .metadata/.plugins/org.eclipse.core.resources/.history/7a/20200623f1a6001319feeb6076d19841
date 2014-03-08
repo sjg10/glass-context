@@ -1,0 +1,158 @@
+/*
+ * Main Activity of the 'Context' live card.
+ */
+
+
+package com.coolrunnings.context;
+
+import java.io.File;
+
+import com.google.android.glass.app.Card;
+import com.google.android.glass.media.CameraManager;
+
+import android.os.Bundle;
+import android.os.FileObserver;
+import android.provider.MediaStore;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.View;
+
+
+public class MainActivity extends Activity {
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		/*
+		 * We're creating a card for the interface.
+		 * 
+		 * More info here: http://developer.android.com/guide/topics/ui/themes.html
+		 */
+		
+		//Start a camera
+		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(cameraIntent,1);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		
+		if (requestCode == 1 && resultCode == RESULT_OK) {
+	        String picturePath = data.getStringExtra(CameraManager.EXTRA_PICTURE_FILE_PATH);
+	        processPictureWhenReady(picturePath);
+	    }
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	private void processPictureWhenReady(final String picturePath) {
+	    final File pictureFile = new File(picturePath);
+
+	    if (pictureFile.exists()) {
+	        // The picture is ready; process it.
+	    } else {
+	        // The file does not exist yet. Before starting the file observer, you
+	        // can update your UI to let the user know that the application is
+	        // waiting for the picture (for example, by displaying the thumbnail
+	        // image and a progress indicator).
+
+	        final File parentDirectory = pictureFile.getParentFile();
+	        FileObserver observer = new FileObserver(parentDirectory.getPath()) {
+	            // Protect against additional pending events after CLOSE_WRITE is
+	            // handled.
+	            private boolean isFileWritten;
+
+	            @Override
+	            public void onEvent(int event, String path) {
+	                if (!isFileWritten) {
+	                    // For safety, make sure that the file that was created in
+	                    // the directory is actually the one that we're expecting.
+	                    File affectedFile = new File(parentDirectory, path);
+	                    isFileWritten = (event == FileObserver.CLOSE_WRITE
+	                            && affectedFile.equals(pictureFile));
+
+	                    if (isFileWritten) {
+	                        stopWatching();
+
+	                        // Now that the file is ready, recursively call
+	                        // processPictureWhenReady again (on the UI thread).
+	                        runOnUiThread(new Runnable() {
+	                            @Override
+	                            public void run() {
+	                                processPictureWhenReady(picturePath);
+	                            }
+	                        });
+	                    }
+	                }
+	            }
+	        };
+	    }
+	    
+	    ImageProc.convertImageToString(picturePath);
+	}
+		
+		
+		/*
+		Card card1 = new Card(this);
+		card1.setText("Hello, Sir!"); // Main text area
+		card1.setFootnote("..or Ma'am"); // Footer
+		View card1View = card1.toView();
+
+		// Display the card we just created
+		setContentView(card1View);
+		*/
+	
+	
+	
+	
+	/*
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new PlaceholderFragment())
+                    .commit();
+        }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //A placeholder fragment containing a simple view.
+     
+    public static class PlaceholderFragment extends Fragment {
+
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            return rootView;
+        }
+    }
+    */
+
+}

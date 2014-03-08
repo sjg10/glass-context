@@ -1,5 +1,14 @@
 package com.coolrunnings.context;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+import magick.ImageMagick;
+import magick.MagickException;
+import magick.MagickImage;
+import magick.util.MagickBitmap;
+
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import android.graphics.Bitmap;
@@ -15,15 +24,22 @@ public class ImageProc{
 	public static String convertImageToString(String path){
 			DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/context/";
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = 4;
 			Log.i(TAG,path);
-			Bitmap bmp = BitmapFactory.decodeFile(path, options);
+			options.inSampleSize=4;
+			Bitmap bmp = BitmapFactory.decodeFile(path);
 			bmp=tidyImage(bmp);
 			return textFromTidyImage(bmp);
 	}
 
 	public static Bitmap tidyImage(Bitmap bmp){
-		//TODO: Use an imageproc package to run through.
+		try {
+			MagickImage mbmp = MagickBitmap.fromBitmap(bmp);
+			mbmp.thresholdImage(75);//TODO: Check threshold value
+			bmp=MagickBitmap.ToBitmap(mbmp);
+		} catch (MagickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return bmp;
 	}
 
@@ -32,7 +48,10 @@ public class ImageProc{
 			Log.v(TAG, "Before baseApi");
 			TessBaseAPI baseApi = new TessBaseAPI();
 			baseApi.init(DATA_PATH, lang);
+			baseApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "abcdefghijklmnopqrstuvwxyz");
 			baseApi.setImage(bmp);
-			return baseApi.getUTF8Text();
-	}
-}
+			String out=baseApi.getUTF8Text();
+			baseApi.clear();
+			Log.e(TAG,out);
+			return out;
+	}}

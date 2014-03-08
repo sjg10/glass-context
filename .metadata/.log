@@ -601,3 +601,50 @@ org.eclipse.osgi.framework.internal.core.AbstractBundle$BundleStatusException
 	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:156)
 	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+
+!ENTRY org.eclipse.m2e.logback.appender 4 0 2014-03-08 19:24:50.364
+!MESSAGE Failed to open search index.
+
+!ENTRY org.eclipse.egit.ui 4 0 2014-03-08 21:51:05.942
+!MESSAGE Checkout conflict with files: 
+Context/src/com/coolrunnings/context/MainActivity.java
+!STACK 0
+org.eclipse.jgit.api.errors.CheckoutConflictException: Checkout conflict with files: 
+Context/src/com/coolrunnings/context/MainActivity.java
+	at org.eclipse.jgit.api.MergeCommand.call(MergeCommand.java:406)
+	at org.eclipse.jgit.api.PullCommand.call(PullCommand.java:307)
+	at org.eclipse.egit.core.op.PullOperation$1.run(PullOperation.java:93)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.egit.core.op.PullOperation.execute(PullOperation.java:124)
+	at org.eclipse.egit.ui.internal.pull.PullOperationUI.execute(PullOperationUI.java:117)
+	at org.eclipse.egit.ui.internal.pull.PullOperationUI$1.runInWorkspace(PullOperationUI.java:92)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: org.eclipse.jgit.errors.CheckoutConflictException: Checkout conflict with files: 
+Context/src/com/coolrunnings/context/MainActivity.java
+	at org.eclipse.jgit.dircache.DirCacheCheckout.doCheckout(DirCacheCheckout.java:412)
+	at org.eclipse.jgit.dircache.DirCacheCheckout.checkout(DirCacheCheckout.java:393)
+	at org.eclipse.jgit.api.MergeCommand.call(MergeCommand.java:286)
+	... 8 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2014-03-08 21:52:30.919
+!MESSAGE Checkout conflict with files: 
+Context/src/com/coolrunnings/context/MainActivity.java
+!STACK 0
+org.eclipse.jgit.api.errors.CheckoutConflictException: Checkout conflict with files: 
+Context/src/com/coolrunnings/context/MainActivity.java
+	at org.eclipse.jgit.api.MergeCommand.call(MergeCommand.java:406)
+	at org.eclipse.jgit.api.PullCommand.call(PullCommand.java:307)
+	at org.eclipse.egit.core.op.PullOperation$1.run(PullOperation.java:93)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2344)
+	at org.eclipse.egit.core.op.PullOperation.execute(PullOperation.java:124)
+	at org.eclipse.egit.ui.internal.pull.PullOperationUI.execute(PullOperationUI.java:117)
+	at org.eclipse.egit.ui.internal.pull.PullOperationUI$1.runInWorkspace(PullOperationUI.java:92)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:38)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)
+Caused by: org.eclipse.jgit.errors.CheckoutConflictException: Checkout conflict with files: 
+Context/src/com/coolrunnings/context/MainActivity.java
+	at org.eclipse.jgit.dircache.DirCacheCheckout.doCheckout(DirCacheCheckout.java:412)
+	at org.eclipse.jgit.dircache.DirCacheCheckout.checkout(DirCacheCheckout.java:393)
+	at org.eclipse.jgit.api.MergeCommand.call(MergeCommand.java:286)
+	... 8 more

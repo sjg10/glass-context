@@ -9,6 +9,8 @@ import java.io.File;
 
 import com.google.android.glass.app.Card;
 import com.google.android.glass.media.CameraManager;
+import com.google.android.glass.timeline.LiveCard;
+import com.google.glass.widget.SliderView;
 
 import android.os.Bundle;
 import android.os.FileObserver;
@@ -18,6 +20,7 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 
 
 public class MainActivity extends Activity {
@@ -25,6 +28,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		/*
 		 * We're creating a card for the interface.
 		 * 
@@ -47,7 +51,6 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		// When done taking picture
 		if (requestCode == 1 && resultCode == RESULT_OK) {
 	        String picturePath = data.getStringExtra(CameraManager.EXTRA_PICTURE_FILE_PATH);
 	        processPictureWhenReady(picturePath);
@@ -89,7 +92,8 @@ public class MainActivity extends Activity {
 	                        runOnUiThread(new Runnable() {
 	                            @Override
 	                            public void run() {
-	                                processPictureWhenReady(picturePath);
+	    	                        String newWord = ImageProc.convertImageToString(picturePath);
+	    	                        createCard(newWord);
 	                            }
 	                        });
 	                    }
@@ -99,9 +103,7 @@ public class MainActivity extends Activity {
 	        observer.startWatching();
 	    }
 	    
-	    String newWord = ImageProc.convertImageToString(picturePath);
 	    
-	    createCard(newWord);
 	}
 		
 		

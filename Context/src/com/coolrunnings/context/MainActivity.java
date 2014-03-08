@@ -5,10 +5,16 @@
 
 package com.coolrunnings.context;
 
+import java.io.File;
+
 import com.google.android.glass.app.Card;
+import com.google.android.glass.media.CameraManager;
 
 import android.os.Bundle;
+import android.os.FileObserver;
+import android.provider.MediaStore;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 
@@ -23,6 +29,70 @@ public class MainActivity extends Activity {
 		 * 
 		 * More info here: http://developer.android.com/guide/topics/ui/themes.html
 		 */
+		
+		//Start a camera
+		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		startActivityForResult(cameraIntent,1);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		
+		if (requestCode == 1 && resultCode == RESULT_OK) {
+	        String picturePath = data.getStringExtra(CameraManager.EXTRA_PICTURE_FILE_PATH);
+	        processPictureWhenReady(picturePath);
+	    }
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	private void processPictureWhenReady(final String picturePath) {
+	    final File pictureFile = new File(picturePath);
+
+	    if (pictureFile.exists()) {
+	        // The picture is ready; process it.
+	    } else {
+	        // The file does not exist yet. Before starting the file observer, you
+	        // can update your UI to let the user know that the application is
+	        // waiting for the picture (for example, by displaying the thumbnail
+	        // image and a progress indicator).
+
+	        final File parentDirectory = pictureFile.getParentFile();
+	        FileObserver observer = new FileObserver(parentDirectory.getPath()) {
+	            // Protect against additional pending events after CLOSE_WRITE is
+	            // handled.
+	            private boolean isFileWritten;
+
+	            @Override
+	            public void onEvent(int event, String path) {
+	                if (!isFileWritten) {
+	                    // For safety, make sure that the file that was created in
+	                    // the directory is actually the one that we're expecting.
+	                    File affectedFile = new File(parentDirectory, path);
+	                    isFileWritten = (event == FileObserver.CLOSE_WRITE
+	                            && affectedFile.equals(pictureFile));
+
+	                    if (isFileWritten) {
+	                        stopWatching();
+
+	                        // Now that the file is ready, recursively call
+	                        // processPictureWhenReady again (on the UI thread).
+	                        runOnUiThread(new Runnable() {
+	                            @Override
+	                            public void run() {
+	                                processPictureWhenReady(picturePath);
+	                            }
+	                        });
+	                    }
+	                }
+	            }
+	        };
+	    }
+	    
+	    ImageProc.convertImageToString(picturePath);
+	}
+		
+		
+		/*
 		Card card1 = new Card(this);
 		card1.setText("Hello, Sir!"); // Main text area
 		card1.setFootnote("..or Ma'am"); // Footer
@@ -30,7 +100,9 @@ public class MainActivity extends Activity {
 
 		// Display the card we just created
 		setContentView(card1View);
-	}
+		*/
+	
+	
 	
 	
 	/*

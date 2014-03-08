@@ -9,6 +9,8 @@ import java.io.File;
 
 import com.google.android.glass.app.Card;
 import com.google.android.glass.media.CameraManager;
+import com.google.android.glass.timeline.LiveCard;
+import com.google.glass.widget.SliderView;
 
 import android.os.Bundle;
 import android.os.FileObserver;
@@ -17,6 +19,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 
 
 public class MainActivity extends Activity {
@@ -24,6 +27,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		/*
 		 * We're creating a card for the interface.
 		 * 
@@ -37,7 +41,13 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		
+		Card card1 = new Card(this);
+		card1.setText("Loading..."); // Main text area
+		//card1.setFootnote("..or Ma'am"); // Footer
+		View card1View = card1.toView();
+
+		// Display the card we just created
+		setContentView(card1View);
 		if (requestCode == 1 && resultCode == RESULT_OK) {
 	        String picturePath = data.getStringExtra(CameraManager.EXTRA_PICTURE_FILE_PATH);
 	        processPictureWhenReady(picturePath);
@@ -79,18 +89,18 @@ public class MainActivity extends Activity {
 	                        runOnUiThread(new Runnable() {
 	                            @Override
 	                            public void run() {
-	                                processPictureWhenReady(picturePath);
+	    	                        String newWord = ImageProc.convertImageToString(picturePath);
+	    	                        createCard(newWord);
 	                            }
 	                        });
 	                    }
 	                }
 	            }
 	        };
+	        observer.startWatching();
 	    }
 	    
-	    String newWord = ImageProc.convertImageToString(picturePath);
 	    
-	    createCard(newWord);
 	}
 		
 		

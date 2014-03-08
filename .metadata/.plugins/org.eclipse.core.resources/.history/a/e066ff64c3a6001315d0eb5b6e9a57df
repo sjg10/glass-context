@@ -1,0 +1,14 @@
+package com.coolrunnings.context;
+
+//Glass Specific
+import com.google.android.glass.timeline.LiveCard;
+import com.google.android.glass.timeline.TimelineManager;
+
+import android.os.IBinder;
+import android.app.Service;
+import android.content.Intent;
+
+
+public class openContext extends Service{
+
+}

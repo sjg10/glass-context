@@ -47,9 +47,8 @@ public class OpenContext extends Service{
 	} // onCreate
 
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		// Where the magic happens
+		// Put the live card on the time line and start the activity.
 		mLiveCard = mTimelineManager.createLiveCard(LIVE_CARD_ID);
-
 		Intent i = new Intent(this, MainActivity.class);
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(i);

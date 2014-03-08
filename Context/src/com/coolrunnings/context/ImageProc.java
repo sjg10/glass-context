@@ -16,6 +16,7 @@ public class ImageProc{
 			DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/context/";
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inSampleSize = 4;
+			Log.i(TAG,path);
 			Bitmap bmp = BitmapFactory.decodeFile(path, options);
 			bmp=tidyImage(bmp);
 			return textFromTidyImage(bmp);
@@ -33,6 +34,5 @@ public class ImageProc{
 			baseApi.init(DATA_PATH, lang);
 			baseApi.setImage(bmp);
 			return baseApi.getUTF8Text();
-			//TODO: Ensure only a single word passed
 	}
 }

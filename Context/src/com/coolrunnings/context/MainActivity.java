@@ -88,19 +88,21 @@ public class MainActivity extends Activity {
 	        };
 	    }
 	    
-	    ImageProc.convertImageToString(picturePath);
+	    String newWord = ImageProc.convertImageToString(picturePath);
+	    
+	    createCard(newWord);
 	}
 		
 		
-		/*
+	private void createCard(String wordToShow){
 		Card card1 = new Card(this);
-		card1.setText("Hello, Sir!"); // Main text area
-		card1.setFootnote("..or Ma'am"); // Footer
+		card1.setText(wordToShow); // Main text area
+		//card1.setFootnote("..or Ma'am"); // Footer
 		View card1View = card1.toView();
 
 		// Display the card we just created
 		setContentView(card1View);
-		*/
+	}
 	
 	
 	

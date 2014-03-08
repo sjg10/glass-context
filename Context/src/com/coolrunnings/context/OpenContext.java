@@ -28,8 +28,23 @@ public class OpenContext extends Service{
 	private LiveCard mLiveCard;
 	
 	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
+	} // IBinder
+	
+	@Override
 	public void onCreate() {
 		super.onCreate();
 		mTimelineManager = TimelineManager.from(this);
 	} // onCreate
+	
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		// Where the magic happens
+		mLiveCard = mTimelineManager.createLiveCard(LIVE_CARD_ID);
+
+		Intent i = new Intent(this, MainActivity.class);
+		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(i);
+		return START_STICKY;
+	}
 }

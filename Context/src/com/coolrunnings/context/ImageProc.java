@@ -33,5 +33,6 @@ public class ImageProc{
 			baseApi.init(DATA_PATH, lang);
 			baseApi.setImage(bmp);
 			return baseApi.getUTF8Text();
+			//TODO: Ensure only a single word passed
 	}
 }

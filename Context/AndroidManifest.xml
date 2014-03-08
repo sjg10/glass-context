@@ -17,7 +17,7 @@
         </activity>
         
         <service
-            android:name="com.coolrunnings.context"
+            android:name="com.coolrunnings.context.OpenContext"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

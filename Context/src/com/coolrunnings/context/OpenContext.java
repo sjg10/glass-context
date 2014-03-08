@@ -36,6 +36,7 @@ public class OpenContext extends Service{
 	public void onCreate() {
 		super.onCreate();
 		mTimelineManager = TimelineManager.from(this);
+		
 	} // onCreate
 	
 	public int onStartCommand(Intent intent, int flags, int startId) {

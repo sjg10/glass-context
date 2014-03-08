@@ -5,20 +5,20 @@
 
 package com.coolrunnings.context;
 
-import java.io.File;
+//import java.io.File;
 
 import com.google.android.glass.app.Card;
-import com.google.android.glass.media.CameraManager;
-import com.google.android.glass.timeline.LiveCard;
-import com.google.glass.widget.SliderView;
+//import com.google.android.glass.media.CameraManager;
+//import com.google.android.glass.timeline.LiveCard;
+//import com.google.glass.widget.SliderView;
 
 import android.os.Bundle;
-import android.os.FileObserver;
-import android.provider.MediaStore;
+//import android.os.FileObserver;
+//import android.provider.MediaStore;
 import android.app.Activity;
-import android.content.Intent;
+//import android.content.Intent;
 import android.hardware.Camera;
-import android.view.Menu;
+//import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -36,9 +36,28 @@ public class MainActivity extends Activity {
 		 */
 		
 		Camera mCamera = Camera.open();
-		mCamera.takePicture(null, null, null);
+		
+		Camera.Parameters parameters = mCamera.getParameters();
+		
+		parameters.setPictureFormat(4);
+		
+		Camera.PictureCallback raw=new Camera.PictureCallback() {
+			
+			@Override
+			public void onPictureTaken(byte[] data, Camera camera) {
+				String newWord = ImageProc.convertImageToString(data);
+				createCard(newWord);
+			}
+		};
+		
+		mCamera.takePicture(null, raw, null);
+
 		mCamera.release();
 		mCamera = null;
+		
+	}	
+		
+		
 		
 		
 		/*
@@ -47,8 +66,11 @@ public class MainActivity extends Activity {
 		// Take a picture
 		startActivityForResult(cameraIntent,1);
 		*/
-	}
 	
+	
+	
+	
+	/*
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -57,6 +79,7 @@ public class MainActivity extends Activity {
 	    }
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+	
 	
 	private void processPictureWhenReady(final String picturePath) {
 	    final File pictureFile = new File(picturePath);
@@ -105,6 +128,7 @@ public class MainActivity extends Activity {
 	    
 	    
 	}
+	*/
 		
 		
 	private void createCard(String wordToShow){

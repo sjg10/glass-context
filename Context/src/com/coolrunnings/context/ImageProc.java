@@ -21,12 +21,12 @@ public class ImageProc{
 	private static final String TAG = "context.ImageProc";
 	public static String DATA_PATH;
 	
-	public static String convertImageToString(String path){
-			DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/context/";
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			Log.i(TAG,path);
-			options.inSampleSize=4;
-			Bitmap bmp = BitmapFactory.decodeFile(path);
+	public static String convertImageToString(byte[] data){
+			//DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/context/";
+			//BitmapFactory.Options options = new BitmapFactory.Options();
+			//Log.i(TAG,path);
+			//options.inSampleSize=4;
+			Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
 			bmp=tidyImage(bmp);
 			return textFromTidyImage(bmp);
 	}

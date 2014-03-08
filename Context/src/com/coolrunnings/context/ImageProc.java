@@ -1,10 +1,5 @@
 package com.coolrunnings.context;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-
-import magick.ImageMagick;
 import magick.MagickException;
 import magick.MagickImage;
 import magick.util.MagickBitmap;

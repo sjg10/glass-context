@@ -12,6 +12,7 @@
         android:allowBackup="true">
         <activity
             android:name="com.coolrunnings.context.MainActivity"
+            android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
             android:enabled="true">
         </activity>

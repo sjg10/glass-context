@@ -1,28 +1,37 @@
 package com.coolrunnings.context;
 
-	public class ImageProc{
-/*
-		public static String convertImageToString(byte[] data){
-				data=tidyImage(data);
-				return textFromTidyImage(data);
-		}
+import com.googlecode.tesseract.android.TessBaseAPI;
 
-		public static byte[] tidyImage(byte[] data){
-			//TODO: Use an imageproc package to run through.
-			return data;
-		}
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.util.Log;
 
-		private static String textFromTidyImage(byte[] data){
-				TessBaseAPI baseApi = new TessBaseAPI();
-				baseApi.init(cameraAct.getFilesDir().getAbsolutePath(), "eng");
-				//baseApi.setVariable("tessedit_char_whitelist", "123456789");
-				baseApi.setPageSegMode(PageSegMode.PSM_SINGLE_CHAR);
-				int[][] grid=new int[9][9];
-				int inc=size/9;
-				Bitmap bmp = Bitmap.createBitmap(inc-16, inc-16,Bitmap.Config.ARGB_8888);
-				baseApi.setImage(bmp);
-				return baseApi.getUTF8Text();
-				baseApi.clear();
-		}
-	}*/
+public class ImageProc{
+	public static final String lang = "eng";
+	private static final String TAG = "context.ImageProc";
+	public static String DATA_PATH;
+	
+	public static String convertImageToString(String path){
+			DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/context/";
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = 4;
+			Bitmap bmp = BitmapFactory.decodeFile(path, options);
+			bmp=tidyImage(bmp);
+			return textFromTidyImage(bmp);
+	}
+
+	public static Bitmap tidyImage(Bitmap bmp){
+		//TODO: Use an imageproc package to run through.
+		return bmp;
+	}
+
+	private static String textFromTidyImage(Bitmap bmp){
+			bmp = bmp.copy(Bitmap.Config.ARGB_8888, true); //required for tess
+			Log.v(TAG, "Before baseApi");
+			TessBaseAPI baseApi = new TessBaseAPI();
+			baseApi.init(DATA_PATH, lang);
+			baseApi.setImage(bmp);
+			return baseApi.getUTF8Text();
+	}
 }

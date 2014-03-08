@@ -2,7 +2,6 @@ package com.coolrunnings.context;
 
 import magick.MagickException;
 import magick.MagickImage;
-import magick.util.MagickBitmap;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
@@ -27,14 +26,14 @@ public class ImageProc{
 	}
 
 	public static Bitmap tidyImage(Bitmap bmp){
-		try {
+		/*try {
 			MagickImage mbmp = MagickBitmap.fromBitmap(bmp);
 			mbmp.thresholdImage(75);//TODO: Check threshold value
 			bmp=MagickBitmap.ToBitmap(mbmp);
 		} catch (MagickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		return bmp;
 	}
 

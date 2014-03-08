@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.app.Activity;
 //import android.content.Intent;
 import android.hardware.Camera;
+import android.util.Log;
 //import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
@@ -46,11 +47,12 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onPictureTaken(byte[] data, Camera camera) {
+				//Log.i("Context.Main","PictureTaken");
 				String newWord = ImageProc.convertImageToString(data);
 				createCard(newWord);
 			}
 		};
-		
+		//Log.i("Context.Main","TakingPicture");
 		mCamera.takePicture(null, raw, null);
 
 		mCamera.release();

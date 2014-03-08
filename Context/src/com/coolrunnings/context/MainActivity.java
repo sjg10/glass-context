@@ -15,6 +15,7 @@ import android.os.FileObserver;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.view.Menu;
 import android.view.View;
 
@@ -30,14 +31,23 @@ public class MainActivity extends Activity {
 		 * More info here: http://developer.android.com/guide/topics/ui/themes.html
 		 */
 		
-		//Start a camera
+		Camera mCamera = Camera.open();
+		mCamera.takePicture(null, null, null);
+		mCamera.release();
+		mCamera = null;
+		
+		
+		/*
+		// Start a camera
 		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		// Take a picture
 		startActivityForResult(cameraIntent,1);
+		*/
 	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		
+		// When done taking picture
 		if (requestCode == 1 && resultCode == RESULT_OK) {
 	        String picturePath = data.getStringExtra(CameraManager.EXTRA_PICTURE_FILE_PATH);
 	        processPictureWhenReady(picturePath);
@@ -86,6 +96,7 @@ public class MainActivity extends Activity {
 	                }
 	            }
 	        };
+	        observer.startWatching();
 	    }
 	    
 	    String newWord = ImageProc.convertImageToString(picturePath);

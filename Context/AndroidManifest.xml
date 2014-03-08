@@ -15,17 +15,20 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.coolrunnings.context.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:enabled="true">
+        </activity>
+        
+        <service
+            android:name="com.coolrunnings.context"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <meta-data android:name="com.google.android.glass.VoiceTrigger"
-            android:resource="@xml/give_me_context" />
-            
-        </activity>
+            android:resource="@xml/give_me_context" />    
+        </service>
     </application>
 
 </manifest>

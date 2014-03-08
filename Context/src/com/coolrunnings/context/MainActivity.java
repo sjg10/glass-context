@@ -35,7 +35,8 @@ public class MainActivity extends Activity {
 		 * More info here: http://developer.android.com/guide/topics/ui/themes.html
 		 */
 		
-		Camera mCamera = Camera.open();
+		Camera mCamera = null;
+		mCamera = Camera.open();
 		
 		Camera.Parameters parameters = mCamera.getParameters();
 		
@@ -56,8 +57,6 @@ public class MainActivity extends Activity {
 		mCamera = null;
 		
 	}	
-		
-		
 		
 		
 		/*

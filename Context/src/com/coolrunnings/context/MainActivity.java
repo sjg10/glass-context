@@ -33,7 +33,6 @@ import android.view.WindowManager;
 
 
 public class MainActivity extends Activity{
-	private CameraView cameraView = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -151,8 +150,10 @@ private void processPictureWhenReady(final String picturePath) {
 	                        runOnUiThread(new Runnable() {
 	                            @Override
 	                            public void run() {
+	                            	Log.i("Context.Main", "Before creating card");
 	    	                        String newWord = ImageProc.convertImageToString(picturePath);
 	    	                        createCard(newWord);
+	    	                        Log.i("Context.Main", "Card should be there.");
 	                            }
 	                        });
 	                    }
@@ -168,6 +169,7 @@ private void processPictureWhenReady(final String picturePath) {
 		
 		
 	private void createCard(String wordToShow){
+		Log.i("Context.Main", "into create card");
 		Card card1 = new Card(this);
 		card1.setText(wordToShow); // Main text area
 		//card1.setFootnote("..or Ma'am"); // Footer

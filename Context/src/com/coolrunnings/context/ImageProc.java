@@ -15,12 +15,12 @@ public class ImageProc{
 	private static final String TAG = "context.ImageProc";
 	public static String DATA_PATH;
 	
-	public static String convertImageToString(byte[] data){
+	public static String convertImageToString(String path){
 			//DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/context/";
-			//BitmapFactory.Options options = new BitmapFactory.Options();
-			//Log.i(TAG,path);
-			//options.inSampleSize=4;
-			Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			Log.i(TAG,path);
+			options.inSampleSize=4;
+			Bitmap bmp = BitmapFactory.decodeFile(path,options);
 			bmp=tidyImage(bmp);
 			return textFromTidyImage(bmp);
 	}
@@ -46,6 +46,8 @@ public class ImageProc{
 			baseApi.setImage(bmp);
 			String out=baseApi.getUTF8Text();
 			baseApi.clear();
+			if( out.indexOf('\n')!=-1)
+			out.substring(0, out.indexOf('\n'));
 			Log.e(TAG,out);
 			return out;
 	}}
